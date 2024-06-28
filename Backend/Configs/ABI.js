@@ -1,5 +1,5 @@
 const ethers = require("ethers");
-
+const poolAddr=0x794a61358D6845594F94dc1DB02A252b5b4814aD;
 // ABI
 const AAVE_DATAPROV_ABI_AVAX = [
     {
