@@ -23,12 +23,21 @@ router.get("/reserves/:poolAddress", async (req, res) => {
   const { poolAddress } = req.params;
   try {
     const tokens = await Aave_GetPool_tokens(poolAddress);
-    res.json(tokens);
+
+    const tokenDetailsPromises = tokens.map(async (tokenAddress) => {
+      const tokenDetails = await fetchTokenDetails(tokenAddress);
+      return { [tokenDetails.tokenName]: tokenAddress };
+    });
+
+    const tokenDetailsArray = await Promise.all(tokenDetailsPromises);
+    const tokenDetailsObject = Object.assign({}, ...tokenDetailsArray);
+
+    res.json(tokenDetailsObject);
   } catch (error) {
+    console.error("Error fetching token details:", error);
     res.status(500).json({ error: error.message });
   }
 });
-
 // Route to check if a specific asset exists in the reserves list
 router.get("/reserve-exists/:asset/:poolAddress", async (req, res) => {
   const { asset, poolAddress } = req.params;
