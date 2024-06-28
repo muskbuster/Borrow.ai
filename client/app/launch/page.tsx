@@ -2,16 +2,51 @@
 import { ConnectButton } from "thirdweb/react";
 import { Tabs, Tab, Card, Input, CardBody, Button } from "@nextui-org/react";
 
-import { prepareContractCall, readContract, resolveMethod } from "thirdweb";
-import TOGCard from "@/components/TOGCard";
 import { client } from "../client";
-import UserRegisterationButton from "@/components/UserRegisterationButton";
-import UserLoginButton from "@/components/LoginButton";
+
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "@/node_modules/axios/index";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 function Feed({}: Props) {
+  const [userLendData, setUserLendData] = useState({
+    lentTokenAddress: "",
+    collateralTokenAddress: "",
+  });
+
+  const [userBorrowData, setUserBorrowData] = useState({
+    borrowedTokenAddress: "",
+    collateralTokenAddress: "",
+  });
+
+  const handleGo = async () => {
+    console.log("Go clicked");
+    console.log(userLendData);
+    console.log(userBorrowData);
+  };
+
+  async function checkReserveExists(asset: any, poolAddress: any) {
+    let poolAdr = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+    let id = toast.loading("Checking reserve existence...");
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/reserve-exists/${asset}/${poolAdr}`
+      );
+      if (response?.data?.exists) {
+        toast.success("Reserve exists!", { id });
+        router.push(`/lend`);
+      } else {
+        toast.error("Reserve does not exist!", { id });
+      }
+      return response?.data?.exists;
+    } catch (error: any) {
+      console.error("Error checking reserve existence:", error.message);
+      throw error;
+    }
+  }
+  const router = useRouter();
   return (
     <div className="w-full">
       <Toaster />
@@ -25,7 +60,12 @@ function Feed({}: Props) {
       </div>
       <div className="w-full h-[80vh] flex justify-center items-center">
         <div className="flex w-1/3 flex-col">
-          <Tabs key="lend" aria-label="Dynamic tabs" color="success" radius="full">
+          <Tabs
+            key="lend"
+            aria-label="Dynamic tabs"
+            color="success"
+            radius="full"
+          >
             <Tab key="lend" title="Lend">
               <Card>
                 <CardBody className="px-8 py-10 gap-y-4">
@@ -38,17 +78,39 @@ function Feed({}: Props) {
                     placeholder="0xabvcd123445..."
                     variant="bordered"
                     type="text"
-                  />
-                 
-                  <Input
-                    autoFocus
-                    label="Collateral Token Address" 
-                    placeholder="0x5677788..."
-                    variant="bordered"
-                    type="password"
+                    value={userLendData.lentTokenAddress}
+                    onChange={(e: any) =>
+                      setUserLendData({
+                        ...userLendData,
+                        lentTokenAddress: e.target.value,
+                      })
+                    }
                   />
 
-                  <Button color="warning" variant="faded">
+                  <Input
+                    autoFocus
+                    label="Collateral Token Address"
+                    placeholder="0x5677788..."
+                    variant="bordered"
+                    type="text"
+                    value={userLendData.collateralTokenAddress}
+                    onChange={(e: any) =>
+                      setUserLendData({
+                        ...userLendData,
+                        collateralTokenAddress: e.target.value,
+                      })
+                    }
+                  />
+
+                  <Button
+                    onClick={async () => {
+                      handleGo();
+                      let result = await checkReserveExists(userLendData.lentTokenAddress,userLendData.collateralTokenAddress);
+                      console.log(result,"Result");
+                    }}
+                    color="warning"
+                    variant="faded"
+                  >
                     Go
                   </Button>
                 </CardBody>
@@ -58,30 +120,48 @@ function Feed({}: Props) {
             <Tab key="borrow" title="Borrow">
               <Card>
                 <CardBody>
-                <CardBody className="px-8 py-10 gap-y-4">
-                  <h1 className="font-bold text-xl">
-                    Borrow your money to the Lenders and earn interest
-                  </h1>
-                  <Input
-                    autoFocus
-                    label="Borrow Token Address"
-                    placeholder="0xabvcd123445..."
-                    variant="bordered"
-                    type="text"
-                  />
-                 
-                  <Input
-                    autoFocus
-                    label="Collateral Token Address" 
-                    placeholder="0x5677788..."
-                    variant="bordered"
-                    type="password"
-                  />
+                  <CardBody className="px-8 py-10 gap-y-4">
+                    <h1 className="font-bold text-xl">
+                      Borrow your money to the Lenders and earn interest
+                    </h1>
+                    <Input
+                      autoFocus
+                      label="Borrow Token Address"
+                      placeholder="0xabvcd123445..."
+                      variant="bordered"
+                      value={userBorrowData.borrowedTokenAddress}
+                      onChange={(e: any) => {
+                        setUserBorrowData({
+                          ...userBorrowData,
+                          borrowedTokenAddress: e.target.value,
+                        });
+                      }}
+                      type="text"
+                    />
 
-                  <Button color="warning" variant="faded">
-                    Go
-                  </Button>
-                </CardBody>
+                    <Input
+                      autoFocus
+                      label="Collateral Token Address"
+                      placeholder="0x5677788..."
+                      variant="bordered"
+                      type="text"
+                      value={userBorrowData.collateralTokenAddress}
+                      onChange={(e: any) => {
+                        setUserBorrowData({
+                          ...userBorrowData,
+                          collateralTokenAddress: e.target.value,
+                        });
+                      }}
+                    />
+
+                    <Button  onClick={async () => {
+                      handleGo();
+                      let result = await checkReserveExists(userBorrowData.borrowedTokenAddress,userBorrowData.collateralTokenAddress);
+                      console.log(result,"Result");
+                    }} color="warning" variant="faded">
+                      Go
+                    </Button>
+                  </CardBody>
                 </CardBody>
               </Card>
             </Tab>

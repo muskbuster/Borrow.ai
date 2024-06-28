@@ -8,14 +8,16 @@ const {
 const { fetchTokenDetails } = require("../TokenDetails");
 
 // Route to get pool details
-router.get("/pool-details/:asset/:poolAddress", async (req, res) => {
-  const { asset, poolAddress } = req.params;
-  try {
-    const poolDetails = await Aave_PoolDeets(asset, poolAddress);
-    res.json(poolDetails);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+router.get('/pool-details/:asset/:poolAddress', async (req, res) => {
+    const { asset, poolAddress } = req.params;
+    console.log(asset, poolAddress);
+    try {
+        const poolDetails = await Aave_PoolDeets(asset, poolAddress);
+        console.log(poolDetails);
+        res.json({poolDetails});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // Route to get the list of reserve tokens
@@ -49,9 +51,11 @@ router.get("/reserve-exists/:asset/:poolAddress", async (req, res) => {
   }
 });
 
-router.post("/get-pool-details", async (req, res) => {
+router.get("/get-pool-details/:asset/:poolAddress", async (req, res) => {
   try {
-    const { asset, poolAddress } = req.body;
+    const { asset, poolAddress } = req.params;
+
+    console.log(asset, poolAddress);
     const tokens = await Aave_GetPool_tokens(poolAddress);
 
     const poolDetails = await Aave_PoolDeets(asset, poolAddress);
