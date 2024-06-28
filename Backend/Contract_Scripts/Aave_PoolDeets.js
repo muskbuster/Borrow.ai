@@ -6,13 +6,15 @@ const { AAVE_V3, AAVE_DATAPROV_ABI_AVAX } = require('../Configs/ABI');
 const Aave_PoolDeets = async (asset, poolAddress) => {
     const contract = new ethers.Contract(poolAddress, AAVE_V3, AvaxMainet);
     let poolDetails = await contract.getReserveData(asset);
-    return poolDetails;
+    console.log(poolDetails);
+    return poolDetails;     
 }
 
 // Function to get the list of reserve tokens
 const Aave_GetPool_tokens = async (poolAddress) => {
     const contract = new ethers.Contract(poolAddress, AAVE_V3, AvaxMainet);
     let tokens = await contract.getReservesList();
+
     return tokens;
 }
 
@@ -27,6 +29,9 @@ const Aave_GetreserveExists = async (poolAddress, asset) => {
     return false;
 }
 
+//need route to return all assets along with reserve data
+//liquidityIndex,currentLiquidityRate,currentStableBorrowRate,accruedToTreasury
+//pool address 0x794a61358D6845594F94dc1DB02A252b5b4814aD
 module.exports = {
     Aave_PoolDeets,
     Aave_GetPool_tokens,
