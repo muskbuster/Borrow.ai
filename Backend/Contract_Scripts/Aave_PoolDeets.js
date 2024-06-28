@@ -7,7 +7,7 @@ const Aave_PoolDeets = async (asset, poolAddress) => {
     const contract = new ethers.Contract(poolAddress, AAVE_V3, AvaxMainet);
     let poolDetails = await contract.getReserveData(asset);
     console.log(poolDetails);
-    return poolDetails;     
+    return poolDetails;
 }
 
 // Function to get the list of reserve tokens
