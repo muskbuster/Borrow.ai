@@ -1,27 +1,30 @@
 const ethers = require('ethers');
-const { AvaxMainet, ArbitrumMainet } = require('../Configs/NetworkConfig');
-const {AAVE_POOL_ABI_AVAX,AAVE_UI_POOL_AVAX,AAVE_DATAPROV_ABI_AVAX}= require('../Configs/ABI');
+const { AvaxMainet } = require('../Configs/NetworkConfig');
+const { AAVE_V3, AAVE_DATAPROV_ABI_AVAX } = require('../Configs/ABI');
 
+// Function to get pool details for a specific asset
 const Aave_PoolDeets = async (asset, poolAddress) => {
-   const contract= new ethers.Contract(poolAddress, AAVE_DATAPROV_ABI_AVAX, AvaxMainet);
+    const contract = new ethers.Contract(poolAddress, AAVE_V3, AvaxMainet);
     let poolDetails = await contract.getReserveData(asset);
-   const APY=poolDetails.liquidityIndex;
-   const Interest=poolDetails.liquidityIndex;
     return poolDetails;
 }
-const Aave_GetPool_tokens = async () => {
-    const contract = new ethers.Contract((poolAddress,AAVE_DATAPROV_ABI_AVAX,AvaxMainet));
+
+// Function to get the list of reserve tokens
+const Aave_GetPool_tokens = async (poolAddress) => {
+    const contract = new ethers.Contract(poolAddress, AAVE_V3, AvaxMainet);
     let tokens = await contract.getReservesList();
     return tokens;
 }
-const Aave_GetreserveExists = async (asset) => {
-    const contract = new ethers.Contract((poolAddress,AAVE_DATAPROV_ABI_AVAX,AvaxMainet));
-    let tokens = await contract.getReservesList();
+
+// Function to check if a specific asset exists in the reserves list
+const Aave_GetreserveExists = async (poolAddress, asset) => {
+    const tokens = await Aave_GetPool_tokens(poolAddress);
     for (let i = 0; i < tokens.length; i++) {
         if (tokens[i] === asset) {
             return true;
         }
     }
+    return false;
 }
 
 module.exports = {
