@@ -1,6 +1,6 @@
 "use client";
-import { prepareContractCall, resolveMethod } from "thirdweb";
-import { TransactionButton, useSendTransaction } from "thirdweb/react";
+import { prepareContractCall } from "thirdweb"
+import { useSendTransaction } from "thirdweb/react";
 import { contract } from "@/utils/contracts";
 import { Textarea } from "@nextui-org/input";
 import toast from "react-hot-toast";
@@ -25,8 +25,8 @@ export default function WriteLetterBtn({ togIndex }: { togIndex: number }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [reciever, setReciever] = useState("");
   const [description, setDescription] = useState("");
-
-  const { mutate: sendTransaction, isError } = useSendTransaction();
+  const { mutate: sendTransaction } = useSendTransaction();
+ 
 
   return (
     <>

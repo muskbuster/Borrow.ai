@@ -46,6 +46,25 @@ function Feed({}: Props) {
       throw error;
     }
   }
+  async function checkReserveExistsBorrow(asset: any, poolAddress: any) {
+    let poolAdr = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+    let id = toast.loading("Checking reserve existence...");
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/reserve-exists/${asset}/${poolAdr}`
+      );
+      if (response?.data?.exists) {
+        toast.success("Reserve exists!", { id });
+        router.push(`/borrow`);
+      } else {
+        toast.error("Reserve does not exist!", { id });
+      }
+      return response?.data?.exists;
+    } catch (error: any) {
+      console.error("Error checking reserve existence:", error.message);
+      throw error;
+    }
+  }
   const router = useRouter();
   return (
     <div className="w-full">
@@ -156,7 +175,7 @@ function Feed({}: Props) {
 
                     <Button  onClick={async () => {
                       handleGo();
-                      let result = await checkReserveExists(userBorrowData.borrowedTokenAddress,userBorrowData.collateralTokenAddress);
+                      let result = await checkReserveExistsBorrow(userBorrowData.borrowedTokenAddress,userBorrowData.collateralTokenAddress);
                       console.log(result,"Result");
                     }} color="warning" variant="faded">
                       Go

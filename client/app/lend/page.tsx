@@ -13,17 +13,45 @@ import {
 } from "@nextui-org/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { prepareContractCall } from "thirdweb";
+import { client } from "../client";
+import { BigNumber } from "ethers";
+import {
+  useSendTransaction,
+  ConnectButton,
+  ConnectEmbed,
+  useActiveAccount,
+} from "thirdweb/react";
+import { getContractInstance } from "../../utils/contracts";
 export default function Lend() {
+  const { mutate: sendTransaction } = useSendTransaction();
   const [poolsData, setPoolsData] = useState([]);
   const [poolsAddresses, setPoolsAddresses] = useState([]);
+  const account = useActiveAccount();
+  console.log(account, "account");
   const [poolClickData, setPoolClickData] = useState({
     asset: "",
     tokens: [],
     liquidityIndex: "",
-    currentLiquidityRate:"",
+    currentLiquidityRate: "",
     currentStableBorrowRate: "",
     accruedToTreasury: "",
   });
+  const getApprove = async () => {
+    const contract = await getContractInstance(
+      "0x794a61358D6845594F94dc1DB02A252b5b4814aD"
+    );
+    const transaction = await prepareContractCall({
+      contract,
+      method:
+        "function approve(address spender, uint256 amount) returns (bool)",
+      params: [
+        "0xcfa038455b54714821f291814071161c9870B891",
+        "200000000000000000",
+      ],
+    });
+    await sendTransaction(transaction);
+  };
   useEffect(() => {
     (async () => {
       let id = toast.loading("Fetching Pools...");
@@ -46,32 +74,34 @@ export default function Lend() {
     // fetchData("0xd586E7F844cEa2F87f50152665BCbc2C279D8d70","0x794a61358D6845594F94dc1DB02A252b5b4814aD");
   }, []);
 
-  const handlePoolClick = async (asset:any) => {
+  const handlePoolClick = async (asset: any) => {
     let id = toast.loading("Fetching Pool Details...");
     let poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-      try {
-        let response = await axios.get(`http://localhost:8080/api/get-pool-details/${asset}/${poolAddress}`);
-        console.log(response?.data);
-        setPoolClickData(response?.data);
+    try {
+      let response = await axios.get(
+        `http://localhost:8080/api/get-pool-details/${asset}/${poolAddress}`
+      );
+      console.log(response?.data);
+      setPoolClickData(response?.data);
 
-        toast.success("Here are Details !", { id });
-      } catch (error) {
-        console.log(error);
-        toast.error("Error fetching pool details", { id });
-      }
+      toast.success("Here are Details !", { id });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error fetching pool details", { id });
+    }
   };
   return (
     <>
-     <Toaster />
+      <Toaster />
       <div className="flex mx-auto justify-center gap-8 items-center w-full h-[100vh] border-4 border-yellow-600">
         <Card className="w-[400px]">
           <CardHeader className="flex gap-3">
-           
             <div className="flex flex-col">
               <p className="text-md">Lend Card</p>
             </div>
           </CardHeader>
           <Divider />
+          <ConnectButton client={client} />
           <CardBody className="gap-y-4 px-4 py-8">
             <Input
               type="number"
@@ -112,11 +142,12 @@ export default function Lend() {
                 </div>
               }
             />
-           
           </CardBody>
           <Divider />
           <CardFooter>
-            <Button color="success">Create Position</Button>
+            <Button onClick={getApprove} color="success">
+              Create Position
+            </Button>
           </CardFooter>
         </Card>
         <Card className="w-[400px]">
@@ -142,7 +173,6 @@ export default function Lend() {
             </div>
           </CardBody>
           <Divider />
-          
         </Card>
       </div>
     </>
