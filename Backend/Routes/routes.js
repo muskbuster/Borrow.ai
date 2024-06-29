@@ -6,6 +6,7 @@ const {
   Aave_GetreserveExists,
 } = require("../Contract_Scripts/Aave_PoolDeets"); // Assuming aaveFunctions.js is the file with your Aave functions
 const { fetchTokenDetails } = require("../TokenDetails");
+const { callExecuteBorrow, callExecuteDeposit } = require("../Contract_Scripts/ContractCall");
 
 // Route to get pool details
 router.get('/pool-details/:asset/:poolAddress', async (req, res) => {
@@ -47,6 +48,30 @@ router.get("/reserve-exists/:asset/:poolAddress", async (req, res) => {
     const exists = await Aave_GetreserveExists(poolAddress, asset);
     res.json({ exists });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to call executeBorrow
+router.post('/execute-borrow', async (req, res) => {
+  const { asset, amount, interestRateMode, referralCode, onBehalfOf } = req.body;
+  try {
+    const receipt = await callExecuteBorrow(asset, amount, interestRateMode, referralCode, onBehalfOf);
+    res.json({ receipt });
+  } catch (error) {
+    console.error("Error executing borrow:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to call executeDeposit
+router.post('/execute-deposit', async (req, res) => {
+  const { asset, amount, onBehalfOf, referralCode } = req.body;
+  try {
+    const receipt = await callExecuteDeposit(asset, amount, onBehalfOf, referralCode);
+    res.json({ receipt });
+  } catch (error) {
+    console.error("Error executing deposit:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -96,6 +121,7 @@ router.get("/get-pool-details/:asset/:poolAddress", async (req, res) => {
 });
 
 module.exports = router;
+
 
 /** URL: http://localhost:3000/api/get-pool-details/
  * Body : {
