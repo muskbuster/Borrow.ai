@@ -3,7 +3,7 @@ const { AAVE_V3, CallerContract } = require('../Configs/ABI');
 const{AvaxTestnet}=require('../Configs/NetworkConfig');
 require('dotenv').config();
 
-const contract= new ethers.Contract("0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",CallerContract,AvaxTestnet);
+const contract= new ethers.Contract("0x64d00062F6786273bD5dDFB8168bC3Da386e13FD",CallerContract,AvaxTestnet);
 const signer= ethers.Wallet(process.env.PRIVATE_KEY,AvaxTestnet);
 console.log(signer.toString());
 async function callExecuteBorrow(asset, amount, interestRateMode, referralCode, onBehalfOf) {

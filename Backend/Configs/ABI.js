@@ -3413,81 +3413,80 @@ const MORE_MONEY_AVAX = [
     }
   ]
 
-  const CallerContract=[
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_lendingPoolAddress",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "asset",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "interestRateMode",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint16",
-          "name": "referralCode",
-          "type": "uint16"
-        },
-        {
-          "internalType": "address",
-          "name": "onBehalfOf",
-          "type": "address"
-        }
-      ],
-      "name": "executeBorrow",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "asset",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "onBehalfOf",
-          "type": "address"
-        },
-        {
-          "internalType": "uint16",
-          "name": "referralCode",
-          "type": "uint16"
-        }
-      ],
-      "name": "executeDeposit",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ];
-
+const CallerContract=[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "asset",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "interestRateMode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint16",
+				"name": "referralCode",
+				"type": "uint16"
+			},
+			{
+				"internalType": "address",
+				"name": "onBehalfOf",
+				"type": "address"
+			}
+		],
+		"name": "executeBorrow",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "asset",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "onBehalfOf",
+				"type": "address"
+			},
+			{
+				"internalType": "uint16",
+				"name": "referralCode",
+				"type": "uint16"
+			}
+		],
+		"name": "executeDeposit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_lendingPoolAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+]
 module.exports = {
     AAVE_DATAPROV_ABI_AVAX,
     AAVE_UI_POOL_AVAX,
