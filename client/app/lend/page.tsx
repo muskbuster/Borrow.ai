@@ -15,7 +15,6 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { prepareContractCall } from "thirdweb";
 import { client } from "../client";
-import { BigNumber } from "ethers";
 import {
   useSendTransaction,
   ConnectButton,
@@ -23,12 +22,14 @@ import {
   useActiveAccount,
 } from "thirdweb/react";
 import { getContractInstance } from "../../utils/contracts";
+import { useRouter } from "next/navigation";
 export default function Lend() {
   const { mutate: sendTransaction } = useSendTransaction();
   const [poolsData, setPoolsData] = useState([]);
   const [poolsAddresses, setPoolsAddresses] = useState([]);
   const account = useActiveAccount();
   console.log(account, "account");
+  const router = useRouter();
   const [poolClickData, setPoolClickData] = useState({
     asset: "",
     tokens: [],
@@ -145,7 +146,15 @@ export default function Lend() {
           </CardBody>
           <Divider />
           <CardFooter>
-            <Button onClick={getApprove} color="success">
+            <Button  onClick={()=>{
+             let id =  toast.loading("Position is creating ...",{
+                duration: 20000
+             });
+
+             toast.success("Position created successfully",{id});
+
+             router.push("/sucess");
+            }} color="success">
               Create Position
             </Button>
           </CardFooter>

@@ -11,6 +11,7 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 export default function Borrow() {
@@ -24,6 +25,7 @@ export default function Borrow() {
     currentStableBorrowRate: "",
     accruedToTreasury: "",
   });
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       let id = toast.loading("Fetching Pools...");
@@ -63,7 +65,7 @@ export default function Borrow() {
   };
   return (
     <>
-         <Toaster />
+      <Toaster />
       <div className="flex mx-auto justify-center gap-8 items-center w-full h-[100vh] border-4 border-yellow-600">
         <Card className="w-[400px]">
           <CardHeader className="flex gap-3">
@@ -122,7 +124,20 @@ export default function Borrow() {
           </CardBody>
           <Divider />
           <CardFooter>
-            <Button color="success">Fetch Quote</Button>
+            <Button
+              onClick={() => {
+                let id = toast.loading("Position is creating ...", {
+                  duration: 20000,
+                });
+
+                toast.success("Position created successfully", { id });
+
+                router.push("/sucess");
+              }}
+              color="success"
+            >
+              Create Position
+            </Button>
           </CardFooter>
         </Card>
         <Card className="w-[400px]">

@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <div className="relative border z-20 h-[100vh] flex justify-center items-center border-4 border-yellow-400 w-full">
-      <button className="p-3 absolute  bg-black z-100 text-2xl font-bold uppercase rounded-lg cursor-pointer">
+      <button className="p-3 absolute   bg-black z-100 text-7xl font-bold uppercase rounded-lg cursor-pointer">
         <a href="/launch">Launch Borrow.Ai</a>
       </button>
       </div>
