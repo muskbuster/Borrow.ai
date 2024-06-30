@@ -4,7 +4,7 @@ const{AvaxTestnet}=require('../Configs/NetworkConfig');
 require('dotenv').config();
 
 const contract= new ethers.Contract("0x64d00062F6786273bD5dDFB8168bC3Da386e13FD",CallerContract,AvaxTestnet);
-const signer= ethers.Wallet(process.env.PRIVATE_KEY,AvaxTestnet);
+const signer= new ethers.Wallet(process.env.PRIVATE_KEY,AvaxTestnet);
 console.log(signer.toString());
 async function callExecuteBorrow(asset, amount, interestRateMode, referralCode, onBehalfOf) {
     const tx = await contract.executeBorrow(asset, amount, interestRateMode, referralCode, onBehalfOf);
@@ -21,7 +21,7 @@ async function callExecuteDeposit(asset, amount, onBehalfOf, referralCode) {
     console.log("Transaction was mined in block:", receipt.blockNumber);
 }
 
-modules.export =
+module.exports =
 {
     callExecuteBorrow,
     callExecuteDeposit
