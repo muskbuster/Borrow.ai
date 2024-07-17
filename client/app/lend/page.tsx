@@ -58,7 +58,7 @@ export default function Lend() {
       let id = toast.loading("Fetching Pools...");
       let poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
       const response = await axios.get(
-        `http://localhost:8080/api/reserves/${poolAddress}`
+        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/reserves/${poolAddress}`
       );
       function separateKeysAndValues(obj) {
         const keys = Object.keys(obj);
@@ -80,7 +80,7 @@ export default function Lend() {
     let poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     try {
       let response = await axios.get(
-        `http://localhost:8080/api/get-pool-details/${asset}/${poolAddress}`
+        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/get-pool-details/${asset}/${poolAddress}`
       );
       console.log(response?.data);
       setPoolClickData(response?.data);
