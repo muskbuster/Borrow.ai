@@ -58,7 +58,7 @@ export default function Lend() {
       let id = toast.loading("Fetching Pools...");
       let poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
       const response = await axios.get(
-        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/reserves/${poolAddress}`
+        `https://borrow-ai.vercel.app/api/reserves/${poolAddress}`
       );
       function separateKeysAndValues(obj) {
         const keys = Object.keys(obj);
@@ -80,7 +80,7 @@ export default function Lend() {
     let poolAddress = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     try {
       let response = await axios.get(
-        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/get-pool-details/${asset}/${poolAddress}`
+        `https://borrow-ai.vercel.app/api/get-pool-details/${asset}/${poolAddress}`
       );
       console.log(response?.data);
       setPoolClickData(response?.data);
