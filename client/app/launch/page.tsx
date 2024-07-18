@@ -33,7 +33,7 @@ function Feed({}: Props) {
     let id = toast.loading("Checking reserve existence...");
     try {
       let response = await axios.get(
-        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/reserve-exists/0xd586E7F844cEa2F87f50152665BCbc2C279D8d70/0x794a61358D6845594F94dc1DB02A252b5b4814aD`
+        `https://borrow-ai.vercel.app/api/reserve-exists/0xd586E7F844cEa2F87f50152665BCbc2C279D8d70/0x794a61358D6845594F94dc1DB02A252b5b4814aD`
       );
       if (response?.data?.exists) {
         toast.success("Reserve exists!", { id });
@@ -52,7 +52,7 @@ function Feed({}: Props) {
     let id = toast.loading("Checking reserve existence...");
     try {
       const response = await axios.get(
-        `https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/api/reserve-exists/${asset}/${poolAdr}`
+        `https://borrow-ai.vercel.app/api/reserve-exists/${asset}/${poolAdr}`
       );
       if (response?.data?.exists) {
         toast.success("Reserve exists!", { id });
