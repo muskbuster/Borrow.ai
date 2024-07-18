@@ -2,7 +2,7 @@
   "name": "borrow.ai",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://fluffy-space-palm-tree-w4q95pjr99r39jp7-8080.app.github.dev/",
+  "proxy": "https://borrow-ai.vercel.app/api/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
