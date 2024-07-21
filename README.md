@@ -1,7 +1,8 @@
 # Borrow.ai
 ## Deployments - 
 Backend - borrow-ai.vercel.app 
-Endpoint docs - 
+
+Endpoint docs - Backend/docs.md
 
 Frontend - 
 # Introduction
