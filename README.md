@@ -1,4 +1,10 @@
 # Borrow.ai
+## Deployments - 
+Backend - borrow-ai.vercel.app 
+
+Endpoint docs - Backend/docs.md
+
+Frontend - 
 # Introduction
 
 **Borrow.ai** is a leverage aggregator that interfaces with multiple lending protocols to optimize the liquidity and positions of both lenders and borrowers. Lenders can choose the most optimal pool to stake based on their risk and APY preferences. Borrowers can look up and open positions for assets that unlock maximum liquidity for optimal collateral. This drastically reduces the learning curve for users to lend or borrow by abstracting away most complex choices and improving the UX.
