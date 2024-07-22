@@ -54,6 +54,8 @@ function Feed({}: Props) {
       const response = await axios.get(
         `https://borrow-ai.vercel.app/api/reserve-exists/${asset}/${poolAdr}`
       );
+
+      console.log(response, "Response");
       if (response?.data?.exists) {
         toast.success("Reserve exists!", { id });
         router.push(`/borrow`);

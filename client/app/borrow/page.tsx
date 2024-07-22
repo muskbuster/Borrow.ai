@@ -33,7 +33,7 @@ export default function Borrow() {
       const response = await axios.get(
         `https://borrow-ai.vercel.app/api/reserves/${poolAddress}`
       );
-      function separateKeysAndValues(obj) {
+      function separateKeysAndValues(obj:any) {
         const keys = Object.keys(obj);
         const values = Object.values(obj);
 
