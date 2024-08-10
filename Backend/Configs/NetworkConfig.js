@@ -13,7 +13,7 @@ const BaseMainet = new ethers.JsonRpcProvider(
   "https://mainnet.base.org"
 );
 const ModeMainet = new ethers.JsonRpcProvider(
-  "https://mainnet.modefi.com"
+  "https://mainnet.mode.network/"
 );
 module.exports = {
   AvaxMainet,
