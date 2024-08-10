@@ -4,6 +4,9 @@ const {
   Aave_PoolDeets,
   Aave_GetPool_tokens,
   Aave_GetreserveExists,
+  Aave_GetreserveExists_Mode,
+  Aave_GetPool_tokens_Mode,
+  Aave_PoolDeets_Mode,
 } = require("../Contract_Scripts/Aave_PoolDeets"); // Assuming aaveFunctions.js is the file with your Aave functions
 const { fetchTokenDetails } = require("../TokenDetails");
 const { callExecuteBorrow, callExecuteDeposit } = require("../Contract_Scripts/ContractCall");
@@ -16,6 +19,20 @@ router.get('/pool-details/:asset/:poolAddress', async (req, res) => {
         const poolDetails = await Aave_PoolDeets(asset, poolAddress);
         console.log(poolDetails);
         res.json({poolDetails});
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/pool-details-mode/:asset/:poolAddress', async (req, res) => {
+    const { asset, poolAddress } = req.params;
+    console.log(asset, poolAddress);
+    try {
+        const poolDetails = await Aave_PoolDeets_Mode(asset, poolAddress);
+        console.log(poolDetails);
+        res.json({poolDetails});
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -26,21 +43,25 @@ router.get("/reserves/:poolAddress", async (req, res) => {
   const { poolAddress } = req.params;
   try {
     const tokens = await Aave_GetPool_tokens(poolAddress);
-
-    const tokenDetailsPromises = tokens.map(async (tokenAddress) => {
-      const tokenDetails = await fetchTokenDetails(tokenAddress);
-      return { [tokenDetails.tokenName]: tokenAddress };
-    });
-
-    const tokenDetailsArray = await Promise.all(tokenDetailsPromises);
-    const tokenDetailsObject = Object.assign({}, ...tokenDetailsArray);
-
-    res.json(tokenDetailsObject);
+res.json(tokens);
   } catch (error) {
     console.error("Error fetching token details:", error);
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/reserves-mode/:poolAddress", async (req, res) => {
+    const { poolAddress } = req.params;
+    try {
+      const tokens = await Aave_GetPool_tokens_Mode(poolAddress);
+  res.json(tokens);
+    } catch (error) {
+      console.error("Error fetching token details:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
 // Route to check if a specific asset exists in the reserves list
 router.get("/reserve-exists/:asset/:poolAddress", async (req, res) => {
   const { asset, poolAddress } = req.params;
@@ -51,6 +72,17 @@ router.get("/reserve-exists/:asset/:poolAddress", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/reserve-exists-mode/:asset/:poolAddress", async (req, res) => {
+    const { asset, poolAddress } = req.params;
+    try {
+      const exists = await Aave_GetreserveExists_Mode(poolAddress, asset);
+      res.json({ exists });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
 
 // Route to call executeBorrow
 router.post('/execute-borrow', async (req, res) => {
@@ -123,7 +155,7 @@ router.get("/get-pool-details/:asset/:poolAddress", async (req, res) => {
 module.exports = router;
 
 
-/** URL: http://localhost:3000/api/get-pool-details/
+/** URL: http://localhost:3000/api/get-pool-details/0x794a61358D6845594F94dc1DB02A252b5b4814aD/0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
  * Body : {
     "poolAddress" : "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
     "asset" : "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70"
@@ -167,3 +199,4 @@ module.exports = router;
     "Bitcoin": "0x152b9d0FdC40C096757F570A51E494bd4b943E50"
 }
  */
+

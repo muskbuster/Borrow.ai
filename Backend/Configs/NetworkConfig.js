@@ -9,8 +9,15 @@ const ArbitrumMainet = new ethers.JsonRpcProvider(
 const AvaxTestnet = new ethers.JsonRpcProvider(
   "wss://avalanche-fuji-c-chain-rpc.publicnode.com"
 );
-
+const BaseMainet = new ethers.JsonRpcProvider(
+  "https://mainnet.base.org"
+);
+const ModeMainet = new ethers.JsonRpcProvider(
+  "https://mainnet.modefi.com"
+);
 module.exports = {
   AvaxMainet,
   ArbitrumMainet,
+  BaseMainet,
+  ModeMainet,
 };
